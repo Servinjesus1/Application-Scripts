@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<klayout-macro>
+ <description/>
+ <version/>
+ <category/>
+ <prolog/>
+ <epilog/>
+ <doc/>
+ <autorun>false</autorun>
+ <autorun-early>false</autorun-early>
+ <priority>0</priority>
+ <shortcut/>
+ <show-in-menu>false</show-in-menu>
+ <group-name/>
+ <menu-path/>
+ <interpreter>ruby</interpreter>
+ <dsl-interpreter-name/>
+ <text>module MyMacro
+  include RBA
+
+  def self.radial_distance(p1, p2)
+    Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
+  end
+
+  def self.find_closest_point_index(new_path, s_path)
+    min_distance = Float::INFINITY
+    closest_index_nn = closest_index_ss = 0
+
+    new_path.each_point.to_a.each_with_index do |p1, i1|
+      s_path.each_point.to_a.each_with_index do |p2, i2|
+        distance = radial_distance(p1, p2)
+        if distance &lt; min_distance
+          min_distance = distance
+          closest_index_nn = i1
+          closest_index_ss = i2
+        end
+      end
+    end
+
+    [closest_index_nn, closest_index_ss]
+  end
+
+  mw = RBA::Application::instance::main_window
+  view = mw.current_view
+
+  begin
+    view.transaction("Merge paths")
+
+    new_path = nil
+    sel = view.object_selection
+    new_sel = []
+
+    sel.each do |s|
+      if !s.is_cell_inst? &amp;&amp; s.shape.is_valid? &amp;&amp; s.shape.is_path?
+        if !new_path
+          new_path = s.shape.path
+          new_sel &lt;&lt; s
+        else
+          closest_index_nn, closest_index_ss = self.find_closest_point_index(new_path, s.shape.path)
+
+          pts = new_path.each_point.to_a
+          ss_pts = s.shape.path.each_point.to_a - new_path.each_point.to_a
+
+          if closest_index_nn == 0 &amp;&amp; closest_index_ss == s.shape.path.num_points - 1
+            pts = ss_pts + pts
+          elsif closest_index_nn == 0 &amp;&amp; closest_index_ss == 0
+            pts = ss_pts.reverse + pts
+          elsif closest_index_nn == new_path.num_points - 1 &amp;&amp; closest_index_ss == 0
+            pts = pts + ss_pts
+          elsif closest_index_nn == new_path.num_points - 1 &amp;&amp; closest_index_ss == s.shape.path.num_points - 1
+            pts = pts + ss_pts.reverse
+          else
+            pts.insert(closest_index_nn + 1, *ss_pts)
+          end
+
+          new_path.points = pts
+          s.shape.shapes.erase(s.shape)
+        end
+      end
+    end
+
+    if new_path
+      new_sel[0].shape.path = new_path
+    end
+    view.object_selection = new_sel
+  ensure
+    view.commit
+  end
+end
+</text>
+</klayout-macro>

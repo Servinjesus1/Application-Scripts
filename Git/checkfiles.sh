@@ -2,12 +2,12 @@
 
 # Function to calculate the hash of a file
 calculate_hash() {
-    gitB hash-object --no-filters "$1"
+    git hash-object "$1"
 }
 
 # Function to check if the output of git log is more than one line long
 log_is_single_line() {
-    local log_line_count=$(gitB log --find-object="$1" | wc -l)
+    local log_line_count=$(git log --find-object="$1" | wc -l)
     # echo "DEBUG: Number of lines in log for $1: $log_line_count"
     [[ $log_line_count -eq 0 ]]
 }

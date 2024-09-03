@@ -1,0 +1,2 @@
+@if /i [%1]==[/A] start "" "C:/Program Files/SumatraPDF/SumatraPDF.exe" -reuse-instance -%2 %3 %4
+@if /i not [%1]==[/A] start "" "C:/Program Files/SumatraPDF/SumatraPDF.exe" -reuse-instance %1 %2 %3 %4
