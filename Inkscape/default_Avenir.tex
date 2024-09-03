@@ -1,0 +1,20 @@
+% \usepackage{amsmath,amsthm,amssymb,amsfonts, mathtools}
+\usepackage{transparent} % use \transparent{1}{\color[HTML]{} }
+\usepackage[dvipsnames, prologue, pstricks]{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage[papersize={50in, 50in}]{geometry}
+\usepackage[symbol]{footmisc} % To make footnote symbols for e.g. author accredidation
+\usepackage[fontsize=12pt]{fontsize} % Set otherwise with \changefontsize{}
+\usepackage{euler-math} % A nice font alternative for math
+% \usepackage{mathastext} % add Classico to math characters
+\setmainfont{Avenir Next LT Pro}[Scale=1.0]
+\defaultfontfeatures{ Scale=MatchLowercase, Ligatures=TeX }
+% \setlength{\baselineskip}{-5.0pt}
+% \setlength{\parskip}{-5.0pt}
+% \setlength{\lineskip}{-5.0pt}
+\renewcommand{\baselinestretch}{0.5}
+\linespread{1.5} % Nice for presentation readability
+\newfontfamily\lmroman[Ligatures=TeX]{Latin Modern Roman}
+\renewcommand\labelitemi{{\lmroman ^^^^25b6}}
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}

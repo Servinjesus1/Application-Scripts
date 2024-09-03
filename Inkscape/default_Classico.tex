@@ -1,0 +1,15 @@
+\usepackage{transparent} % use \transparent{1}{\color[HTML]{} }
+\usepackage{pstricks}
+\usepackage[dvipsnames, prologue]{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage[papersize={50in, 50in}]{geometry} % For poster compatibility
+\usepackage[fontsize=12pt]{fontsize}
+\usepackage[sfdefault]{classico} % Optima version (installed manually, a nebulous process!)
+\usepackage{euler-math} % A nice font alternative for math
+% Math Bold: \symbf{}
+\renewcommand{\familydefault}{\sfdefault}
+
+\makeatletter
+\newcommand*{\overrightharpoonup}{\mathpalette{\overarrow@\rightharpoonupfill@}}
+\newcommand*{\rightharpoonupfill@}{\arrowfill@\relbar\relbar\rightharpoonup}
+\makeatother
